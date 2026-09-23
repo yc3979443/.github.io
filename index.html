@@ -11,6 +11,14 @@
 
     <title>我們的婚禮｜2027.01.02</title>
 
+    <!-- 社群分享預覽（LINE / Messenger 等），請自行替換文字與圖片網址 -->
+    <meta property="og:title" content="新郎 & 新娘的婚禮 2027.01.02">
+    <meta property="og:description" content="誠摯邀請您與我們一起分享這份幸福">
+    <meta property="og:image" content="images/A200283-0319.jpg">
+
+    <!-- Favicon，可自行換成其他 emoji 或圖片 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💍</text></svg>">
+
     <style>
         /* =========================
            基本設定
@@ -342,163 +350,163 @@
         /* =========================
            婚紗照
         ========================= */
-        
+
         .gallery {
             background: var(--cream);
         }
-        
-        
+
+
         /* 相簿外框 */
-        
+
         .photo-slider-wrapper {
             position: relative;
-        
+
             max-width: 850px;
-        
+
             margin: 0 auto;
-        
+
             display: flex;
-        
+
             align-items: center;
         }
-        
-        
+
+
         /* 相片滑動區 */
-        
+
         .photo-slider {
             width: 100%;
-        
+
             overflow-x: auto;
             overflow-y: hidden;
-        
+
             scroll-snap-type: x mandatory;
-        
+
             scroll-behavior: smooth;
-        
+
             -webkit-overflow-scrolling: touch;
-        
+
             scrollbar-width: none;
-        
+
             border-radius: 6px;
         }
-        
-        
+
+
         .photo-slider::-webkit-scrollbar {
             display: none;
         }
-        
-        
+
+
         /* 相片排列 */
-        
+
         .photo-track {
             display: flex;
-        
+
             width: 100%;
         }
-        
-        
+
+
         /* 每張照片 */
-        
+
         .photo-slide {
             flex: 0 0 100%;
-        
+
             width: 100%;
-        
+
             scroll-snap-align: center;
-        
+
             display: flex;
-        
+
             justify-content: center;
-        
+
             align-items: center;
-        
+
             padding: 0 5px;
         }
-        
-        
+
+
         /* 照片 */
-        
+
         .photo-slide img {
             display: block;
-        
+
             width: 100%;
-        
+
             max-height: 75vh;
-        
+
             height: auto;
-        
+
             object-fit: contain;
-        
+
             border-radius: 4px;
-        
+
             background: #f3eee8;
         }
-        
-        
-       
+
+
+
         /* =========================
            圖片編號
         ========================= */
-        
+
         .photo-counter {
             text-align: center;
-        
+
             margin-top: 18px;
-        
+
             color: var(--gold);
-        
+
             font-family: Georgia, serif;
-        
+
             font-size: 15px;
-        
+
             letter-spacing: 2px;
         }
-        
-        
+
+
         /* 提示文字 */
-        
+
         .photo-hint {
             text-align: center;
-        
+
             margin-top: 8px;
-        
+
             color: var(--brown-light);
-        
+
             font-size: 11px;
-        
+
             letter-spacing: 1px;
         }
-        
-        
+
+
         /* =========================
            手機版
         ========================= */
-        
+
         @media (max-width: 700px) {
-        
+
             .photo-slider-wrapper {
                 width: 100%;
             }
-        
+
             .photo-slide {
                 padding: 0;
             }
-        
+
             .photo-slide img {
                 width: 100%;
-        
+
                 max-height: 70vh;
-        
+
                 object-fit: contain;
             }
-        
-        
+
+
             /* 手機隱藏箭頭 */
-        
+
             .photo-arrow {
                 display: none;
             }
-        
+
         }
 
         /* =========================
@@ -694,13 +702,6 @@
 
             .detail-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .gallery-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-                gap: 8px;
             }
 
             .timeline-item {
@@ -977,8 +978,6 @@
 
         <div class="photo-slider-wrapper">
 
-
-
             <!-- 相片區域 -->
             <div
                 class="photo-slider"
@@ -1034,7 +1033,6 @@
 
             </div>
 
-
         </div>
 
 
@@ -1057,7 +1055,7 @@
 
 
         <div class="photo-hint">
-            手機左右滑動・電腦點擊箭頭
+            手機左右滑動・電腦點擊照片左右側切換
         </div>
 
     </div>
@@ -1300,87 +1298,104 @@
     </p>
 
 </footer>
-photoSlider.addEventListener(
-    "scroll",
-    function () {
+
+<script>
+
+    // =========================
+    // 婚紗照切換
+    // =========================
+
+    let currentPhoto = 0;
+
+    const photoSlider =
+        document.getElementById("photoSlider");
+
+    const photoNumber =
+        document.getElementById("photoNumber");
+
+    const totalPhotos = 6;
+
+
+    function changePhoto(direction) {
+
+        currentPhoto += direction;
+
+        // 第一張往前 → 回到最後一張
+        if (currentPhoto < 0) {
+            currentPhoto = totalPhotos - 1;
+        }
+
+        // 最後一張往後 → 回到第一張
+        if (currentPhoto >= totalPhotos) {
+            currentPhoto = 0;
+        }
 
         const sliderWidth =
             photoSlider.clientWidth;
 
-
-        const index =
-            Math.round(
-                photoSlider.scrollLeft /
-                sliderWidth
-            );
-
-
-        currentPhoto = index;
-
+        photoSlider.scrollTo({
+            left: sliderWidth * currentPhoto,
+            behavior: "smooth"
+        });
 
         photoNumber.textContent =
-            index + 1;
-
-    }
-);
-
-/* =========================
-   婚紗照切換
-========================= */
-
-let currentPhoto = 0;
-
-const photoSlider =
-    document.getElementById("photoSlider");
-
-const photoNumber =
-    document.getElementById("photoNumber");
-
-const totalPhotos = 6;
-
-
-function changePhoto(direction) {
-
-    currentPhoto += direction;
-
-
-    // 第一張往前 → 回到最後一張
-
-    if (currentPhoto < 0) {
-        currentPhoto = totalPhotos - 1;
+            currentPhoto + 1;
     }
 
 
-    // 最後一張往後 → 回到第一張
+    // 手指滑動時同步更新頁碼
+    photoSlider.addEventListener(
+        "scroll",
+        function () {
 
-    if (currentPhoto >= totalPhotos) {
-        currentPhoto = 0;
+            const sliderWidth =
+                photoSlider.clientWidth;
+
+            const index =
+                Math.round(
+                    photoSlider.scrollLeft /
+                    sliderWidth
+                );
+
+            currentPhoto = index;
+
+            photoNumber.textContent =
+                index + 1;
+        }
+    );
+
+
+    function handlePhotoClick(event) {
+
+        // 手機觸控不使用滑鼠點擊功能
+        if (window.innerWidth <= 700) {
+            return;
+        }
+
+        const rect =
+            photoSlider.getBoundingClientRect();
+
+        const clickX =
+            event.clientX - rect.left;
+
+        const middle =
+            rect.width / 2;
+
+        if (clickX < middle) {
+            // 點左半邊 → 上一張
+            changePhoto(-1);
+        } else {
+            // 點右半邊 → 下一張
+            changePhoto(1);
+        }
     }
 
 
-    const sliderWidth =
-        photoSlider.clientWidth;
+    // =========================
+    // 婚禮倒數
+    // =========================
 
-
-    photoSlider.scrollTo({
-        left: sliderWidth * currentPhoto,
-
-        behavior: "smooth"
-    });
-
-
-    photoNumber.textContent =
-        currentPhoto + 1;
-}
-
-<!-- =========================
-     婚禮倒數 JavaScript
-========================= -->
-
-<script>
-
-    // 婚禮日期
-    // 2027 年 1 月 2 日 11:30
+    // 婚禮日期：2027 年 1 月 2 日 11:30
     const weddingDate =
         new Date("2027-01-02T11:30:00+08:00").getTime();
 
@@ -1393,7 +1408,6 @@ function changePhoto(direction) {
         const distance =
             weddingDate - now;
 
-
         // 婚禮時間已經到了
         if (distance <= 0) {
 
@@ -1405,13 +1419,11 @@ function changePhoto(direction) {
             return;
         }
 
-
         const days =
             Math.floor(
                 distance /
                 (1000 * 60 * 60 * 24)
             );
-
 
         const hours =
             Math.floor(
@@ -1420,7 +1432,6 @@ function changePhoto(direction) {
                 (1000 * 60 * 60)
             );
 
-
         const minutes =
             Math.floor(
                 (distance %
@@ -1428,14 +1439,12 @@ function changePhoto(direction) {
                 (1000 * 60)
             );
 
-
         const seconds =
             Math.floor(
                 (distance %
                     (1000 * 60)) /
                 1000
             );
-
 
         document.getElementById("days")
             .textContent = days;
@@ -1457,46 +1466,11 @@ function changePhoto(direction) {
     // 立即執行一次
     updateCountdown();
 
-
     // 每秒更新
     setInterval(
         updateCountdown,
         1000
     );
-
-
-    function handlePhotoClick(event) {
-    
-        // 手機觸控不使用滑鼠點擊功能
-        if (window.innerWidth <= 700) {
-            return;
-        }
-    
-        const slider =
-            document.getElementById("photoSlider");
-    
-        const rect =
-            slider.getBoundingClientRect();
-    
-        const clickX =
-            event.clientX - rect.left;
-    
-        const middle =
-            rect.width / 2;
-    
-    
-        if (clickX < middle) {
-    
-            // 點左半邊 → 上一張
-            changePhoto(-1);
-    
-        } else {
-    
-            // 點右半邊 → 下一張
-            changePhoto(1);
-    
-        }
-    }
 
 </script>
 
