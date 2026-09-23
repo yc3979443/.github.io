@@ -435,70 +435,7 @@
         }
         
         
-        /* =========================
-           左右箭頭
-        ========================= */
-        
-        .photo-arrow {
-            position: absolute;
-        
-            top: 50%;
-        
-            transform: translateY(-50%);
-        
-            z-index: 10;
-        
-            width: 48px;
-        
-            height: 48px;
-        
-            border: none;
-        
-            border-radius: 50%;
-        
-            background: rgba(255, 255, 255, 0.88);
-        
-            color: var(--gold);
-        
-            font-size: 38px;
-        
-            line-height: 42px;
-        
-            cursor: pointer;
-        
-            box-shadow:
-                0 3px 12px
-                rgba(0, 0, 0, 0.12);
-        
-            transition: 0.25s;
-        }
-        
-        
-        .photo-arrow:hover {
-            background: var(--gold);
-        
-            color: white;
-        
-            transform:
-                translateY(-50%)
-                scale(1.05);
-        }
-        
-        
-        /* 左箭頭 */
-        
-        .photo-prev {
-            left: 15px;
-        }
-        
-        
-        /* 右箭頭 */
-        
-        .photo-next {
-            right: 15px;
-        }
-        
-        
+       
         /* =========================
            圖片編號
         ========================= */
@@ -1040,18 +977,14 @@
 
         <div class="photo-slider-wrapper">
 
-            <!-- 左箭頭 -->
-            <button
-                class="photo-arrow photo-prev"
-                onclick="changePhoto(-1)"
-                aria-label="上一張"
-            >
-                ‹
-            </button>
 
 
             <!-- 相片區域 -->
-            <div class="photo-slider" id="photoSlider">
+            <div
+                class="photo-slider"
+                id="photoSlider"
+                onclick="handlePhotoClick(event)"
+            >
 
                 <div class="photo-track">
 
@@ -1101,15 +1034,6 @@
 
             </div>
 
-
-            <!-- 右箭頭 -->
-            <button
-                class="photo-arrow photo-next"
-                onclick="changePhoto(1)"
-                aria-label="下一張"
-            >
-                ›
-            </button>
 
         </div>
 
@@ -1539,6 +1463,40 @@ function changePhoto(direction) {
         updateCountdown,
         1000
     );
+
+
+    function handlePhotoClick(event) {
+    
+        // 手機觸控不使用滑鼠點擊功能
+        if (window.innerWidth <= 700) {
+            return;
+        }
+    
+        const slider =
+            document.getElementById("photoSlider");
+    
+        const rect =
+            slider.getBoundingClientRect();
+    
+        const clickX =
+            event.clientX - rect.left;
+    
+        const middle =
+            rect.width / 2;
+    
+    
+        if (clickX < middle) {
+    
+            // 點左半邊 → 上一張
+            changePhoto(-1);
+    
+        } else {
+    
+            // 點右半邊 → 下一張
+            changePhoto(1);
+    
+        }
+    }
 
 </script>
 
